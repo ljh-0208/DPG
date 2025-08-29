@@ -1,0 +1,67 @@
+DATALOADER:
+  TRAIN_X:
+    BATCH_SIZE: 32
+  VAL:
+    BATCH_SIZE: 32
+  TEST:
+    BATCH_SIZE: 32
+  NUM_WORKERS: 8
+
+INPUT:
+  SIZE: (224, 224)
+  INTERPOLATION: "bicubic"
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
+
+OPTIM:
+  NAME: "sgd"
+  G_LR: 5e-4
+  D_LR: 1e-5
+  MAX_EPOCH: 70
+  LR_SCHEDULER: "cosine"
+  WARMUP_EPOCH: 4
+  WARMUP_TYPE: "linear"
+  WARMUP_CONS_LR: 1e-5
+
+TRAIN:
+  PRINT_FREQ: 10
+
+TEST:
+  NO_TEST: False
+
+MODEL:
+  BACKBONE:
+    NAME: "RN50"
+
+# only domain cartoon & photo in PACS dataset
+# GRAD_CLIP: False
+
+# other defaults
+GRAD_CLIP: True
+
+# The optimal set of parameter combinations in our experiments is given below,
+# and the parameters can be adjusted appropriately in a small range for specific implementations
+
+# in PACS and VLCS dataset
+D_MAX_NORM_WEIGHT: 5e-1
+D_MAX_NORM_BIAS: 5e-1
+D_MAX_NORM_LAST: 5
+G_MAX_NORM_WEIGHT: 5e-2
+G_MAX_NORM_BIAS: 5e-7
+G_MAX_NORM_BIAS: 1e-5
+G_MAX_NORM_BIAS_LAST: 5
+
+
+# other defaults
+# D_MAX_NORM_WEIGHT: 5e-2
+# D_MAX_NORM_BIAS: 5e-1
+# D_MAX_NORM_LAST: 5
+
+# G_MAX_NORM_WEIGHT: 5e-3
+# G_MAX_NORM_BIAS: 5e-8
+# G_MAX_NORM_BIAS_LAST: 1
+
+TRAINER:
+  DPG:
+    PREC: "amp"
